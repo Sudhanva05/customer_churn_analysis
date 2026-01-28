@@ -21,3 +21,19 @@ print(
     .value_counts()
     .head(10)
 )
+
+# Churn by contract type
+print("\nChurn by Contract Type:")
+print(
+    df.groupby("Contract")["Churn Label"]
+    .value_counts(normalize=True)
+    * 100
+)
+
+# Average monthly charges by churn
+print("\nAverage Monthly Charges by Churn:")
+print(
+    df.groupby("Churn Label")["Monthly Charges"]
+    .mean()
+)
+
