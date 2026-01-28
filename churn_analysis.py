@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # Load dataset
 df = pd.read_csv("telecom_churn.csv")
@@ -37,3 +38,39 @@ print(
     .mean()
 )
 
+# Prepare churn by contract (percentage of churned customers)
+churn_contract = (
+    df[df["Churn Label"] == "Yes"]
+    .groupby("Contract")
+    .size()
+)
+
+total_contract = df.groupby("Contract").size()
+
+churn_rate_contract = (churn_contract / total_contract) * 100
+
+# Plot
+plt.figure()
+churn_rate_contract.plot(kind="bar")
+plt.title("Churn Rate by Contract Type")
+plt.ylabel("Churn Rate (%)")
+plt.xlabel("Contract Type")
+plt.tight_layout()
+plt.show()
+
+
+# Top churn reasons
+top_reasons = (
+    df[df["Churn Label"] == "Yes"]["Churn Reason"]
+    .value_counts()
+    .head(5)
+)
+
+plt.figure()
+top_reasons.plot(kind="bar")
+plt.title("Top 5 Reasons for Customer Churn")
+plt.ylabel("Number of Customers")
+plt.xlabel("Churn Reason")
+plt.xticks(rotation=30, ha="right")
+plt.tight_layout()
+plt.show()
